@@ -12,13 +12,30 @@ class LoadConfig
 
     private $config;
 
+    private $provider;
+
     public function __construct()
     {
-        $configPath   = __DIR__ . '/../Support/config.php';
-        $this->config = include $configPath;
+        $this->init();
+    }
+
+    /**
+     * 初始化
+     * @return mixed
+     */
+    public function init()
+    {
+        $configPath     = __DIR__ . '/../Support/config.php';
+        $providerPath   = __DIR__ . '/../Support/provider.php';
+        $this->config   = include $configPath;
+        $this->provider = include $providerPath;
 
         if (empty($this->config)) {
             throw new Exception("load config error, can't not load {$configPath}", 1);
+        }
+
+        if (empty($this->provider)) {
+            throw new Exception("load provider error, can't not load {$providerPath}", 1);
         }
     }
 
@@ -68,6 +85,15 @@ class LoadConfig
         ];
 
         $this->config['account'] = $account;
+    }
+
+    /**
+     * 获取服务映射
+     * @return array
+     */
+    public function getProvider()
+    {
+        return $this->provider;
     }
 
 }

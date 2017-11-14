@@ -2,6 +2,6 @@
 
 return [
 
-    'test' => 'WeiFuTong',
+    'test' => WeiFuTong\Pay\test::class,
 
 ];
