@@ -21,7 +21,7 @@ class LoadConfig
 
     /**
      * 初始化
-     * @return mixed
+     * @throws Exception
      */
     public function init()
     {
@@ -42,7 +42,8 @@ class LoadConfig
     /**
      * 寻找该方法属于的类
      * @param  string $method 方法名
-     * @return mixed;
+     * @throws Exception
+     * @return string
      */
     public function methodBelong($method)
     {
@@ -59,7 +60,8 @@ class LoadConfig
 
     /**
      * 获取账户配置
-     * @return mixed
+     * @throws Exception
+     * @return array
      */
     public function getAccount()
     {

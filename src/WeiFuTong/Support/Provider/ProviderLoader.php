@@ -3,14 +3,27 @@
 namespace WeiFuTong\Support\Loader;
 
 use WeiFuTong\Container\Container;
-use WeiFuTong\Interfaces\LoadInterface;
+use WeiFuTong\Interfaces\ProviderInterface;
 use WeiFuTong\Reflection\ReflectionClass;
 
 /**
  *  服务自动注册
  */
-class ProviderLoader extends LoadInterface
+class ProviderLoader implements ProviderInterface
 {
+
+
+    public function register()
+    {
+        // TODO: Implement register() method.
+    }
+
+
+
+    public function boot()
+    {
+        // TODO: Implement boot() method.
+    }
 
     // 初始化
     public function init()

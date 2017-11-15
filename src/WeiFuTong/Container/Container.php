@@ -22,7 +22,7 @@ class Container
      */
     public static function bind($abstract, $concrete)
     {
-        if ($concrete instanceof Closure) {
+        if ($concrete instanceof \Closure) {
             self::$binds[$abstract] = $concrete;
         } else {
             self::$instance = $concrete;
@@ -41,7 +41,7 @@ class Container
             return self::$instance[$abstract];
         }
 
-        $object = self::$resolve($abstract, $parameters);
+        $object = self::resolve($abstract, $parameters);
 
         self::$instance[$abstract] = $object;
 
@@ -54,13 +54,14 @@ class Container
      * 解析闭包
      * @param  string $abstract
      * @param  array  $parameters
+     * @throws \Exception
      * @return mixed
      */
     public static function resolve($abstract, $parameters = [])
     {
-        $object = call_user_func_array($binds[$abstract], $parameters);
+        $object = call_user_func_array(self::$binds[$abstract], $parameters);
 
-        if (!$object instanceof stdClass) {
+        if (!$object instanceof \stdClass) {
             throw new \Exception("Not found class {$abstract}", 1);
         }
 

@@ -5,7 +5,7 @@ namespace WeiFuTong\Reflection;
 /**
  *  通过字符串获得类
  */
-class ReflectionClass extends ReflectionClass
+class ReflectionClass1 extends ReflectionClass
 {
 
     /**
