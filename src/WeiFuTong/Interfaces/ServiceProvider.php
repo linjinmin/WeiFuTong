@@ -5,7 +5,7 @@ namespace WeiFuTong\Interfaces;
 /**
  *  服务加载类接口
  */
-interface ProviderInterface
+interface ServiceProvider
 {
     // 绑定
     public function register();

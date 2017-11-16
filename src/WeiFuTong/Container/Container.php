@@ -9,23 +9,22 @@ class Container
 {
 
     // 注入的实例
-    private static $instance;
+    private $instance;
 
     // 注入的闭包
-    private static $binds;
+    private $binds;
 
     /**
      * 绑定服务容器
      * @param  string $abstract
-     * @param  instance|closure $concrete
-     * @return null
+     * @param  $concrete
      */
-    public static function bind($abstract, $concrete)
+    public function bind($abstract, $concrete)
     {
         if ($concrete instanceof \Closure) {
-            self::$binds[$abstract] = $concrete;
+            $this->binds[$abstract] = $concrete;
         } else {
-            self::$instance = $concrete;
+            $this->instance[$abstract] = $concrete;
         }
     }
 
@@ -35,35 +34,18 @@ class Container
      * @param  array  $parameters
      * @return mixed
      */
-    public static function make($abstract, $parameters = [])
+    public function make($abstract, $parameters = [])
     {
-        if (isset(self::$instance[$abstract])) {
-            return self::$instance[$abstract];
+        if (isset($this->instance[$abstract])) {
+            return $this->instance[$abstract];
         }
 
-        $object = self::resolve($abstract, $parameters);
+        // 从闭包中解析
+        $object = $this->resolve($abstract, $parameters);
 
-        self::$instance[$abstract] = $object;
+        $this->instance[$abstract] = $object;
 
-        unset(self::$binds[$abstract]);
-
-        return $object;
-    }
-
-    /**
-     * 解析闭包
-     * @param  string $abstract
-     * @param  array  $parameters
-     * @throws \Exception
-     * @return mixed
-     */
-    public static function resolve($abstract, $parameters = [])
-    {
-        $object = call_user_func_array(self::$binds[$abstract], $parameters);
-
-        if (!$object instanceof \stdClass) {
-            throw new \Exception("Not found class {$abstract}", 1);
-        }
+        unset($this->binds[$abstract]);
 
         return $object;
     }
@@ -73,9 +55,22 @@ class Container
      * @param  string $abstract
      * @return bool
      */
-    public static function bound($abstract)
+    public function bound($abstract)
     {
-        return (isset(self::$binds[$abstract]) || isset(self::$instance[$abstract])) ? true : false;
+        return (isset($this->binds[$abstract]) || isset($this->instance[$abstract])) ? true : false;
+    }
+
+    /**
+     * 解析闭包
+     * @param  string $abstract
+     * @param  array  $parameters
+     * @return mixed
+     */
+    private function resolve($abstract, $parameters = [])
+    {
+        $object = call_user_func_array($this->binds[$abstract], $parameters);
+
+        return $object;
     }
 
 }

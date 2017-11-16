@@ -12,30 +12,25 @@ class LoadConfig
 
     private $config;
 
-    private $provider;
+    CONST CONFIG_PATH = __DIR__ . '/Conf/app.php';
 
     public function __construct()
     {
-        $this->init();
+        // 初始化
+        $this->bootstrap();
     }
 
     /**
      * 初始化
      * @throws Exception
      */
-    public function init()
+    public function bootstrap()
     {
-        $configPath     = __DIR__ . '/../Support/config.php';
-        $providerPath   = __DIR__ . '/../Support/provider.php';
-        $this->config   = include $configPath;
-        $this->provider = include $providerPath;
+        // 加载配置
+        $this->load();
 
         if (empty($this->config)) {
-            throw new Exception("load config error, can't not load {$configPath}", 1);
-        }
-
-        if (empty($this->provider)) {
-            throw new Exception("load provider error, can't not load {$providerPath}", 1);
+            throw new Exception("load config error, can't not load" . self::CONFIG_PATH, 1);
         }
     }
 
@@ -48,7 +43,7 @@ class LoadConfig
     public function methodBelong($method)
     {
 
-        foreach ($this->config as $key => $value) {
+        foreach ($this->config['method'] as $key => $value) {
             if (in_array($method, $value)) {
                 return $key;
             }
@@ -93,9 +88,19 @@ class LoadConfig
      * 获取服务映射
      * @return array
      */
-    public function getProvider()
+    public function getProviders()
     {
-        return $this->provider;
+        return $this->config['providers'];
     }
+
+
+    /**
+     * 加载配置
+     */
+    private function load()
+    {
+        $this->config = include self::CONFIG_PATH;
+    }
+
 
 }
