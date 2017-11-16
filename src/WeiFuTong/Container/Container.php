@@ -24,7 +24,7 @@ class Container
         if ($concrete instanceof \Closure) {
             $this->binds[$abstract] = $concrete;
         } else {
-            $this->instance = $concrete;
+            $this->instance[$abstract] = $concrete;
         }
     }
 
