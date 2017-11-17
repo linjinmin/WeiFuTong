@@ -36,6 +36,7 @@ class Container
      */
     public function make($abstract, $parameters = [])
     {
+
         if (isset($this->instance[$abstract])) {
             return $this->instance[$abstract];
         }
@@ -58,6 +59,15 @@ class Container
     public function bound($abstract)
     {
         return (isset($this->binds[$abstract]) || isset($this->instance[$abstract])) ? true : false;
+    }
+
+    /**
+     * 返回所有实例
+     * @return mixed
+     */
+    public function getInstances()
+    {
+        return $this->instance;
     }
 
     /**

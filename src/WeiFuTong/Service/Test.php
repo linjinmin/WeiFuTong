@@ -8,7 +8,7 @@
 
 namespace WeiFuTong\Service;
 
-class Test
+class Test extends PayBase
 {
 
     public function fc1()

@@ -2,17 +2,16 @@
 /**
  * Created by PhpStorm.
  * User: Administrator
- * Date: 2017/11/16
- * Time: 10:45
+ * Date: 2017/11/17
+ * Time: 14:01
  */
 
 namespace WeiFuTong\Support\Provider;
 
+use WeiFuTong\Service\Help\Helper;
 use WeiFuTong\Interfaces\ServiceProvider;
-use WeiFuTong\Service\Test;
 
-
-class TestProvider implements ServiceProvider
+class HelperProvider implements ServiceProvider
 {
 
     private $app;
@@ -25,11 +24,12 @@ class TestProvider implements ServiceProvider
 
     public function register()
     {
-        $params= $this->app->getPayConstructParams();
+
+        $container = $this->app->getContainer();
 
         // TODO: Implement register() method.
-        $this->app->bind('test', function() use ($params) {
-            return new Test(...$params);
+        $this->app->bind('helper', function() use ($container) {
+            return new Helper($container);
         });
 
     }

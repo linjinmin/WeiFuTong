@@ -25,7 +25,7 @@ class AppService
     public function bootstrap()
     {
         // 加载容器
-        $this->getContainer();
+        $this->bootContainer();
 
         // 加载初始服务配置
         $this->loadConfig();
@@ -63,7 +63,31 @@ class AppService
     }
 
 
+    /**
+     * 获取支付基类所需的参数
+     * @return mixed
+     */
+    public function getPayConstructParams()
+    {
+        $loadConfig = $this->container->make(Constant::LOAD_CONFIG);
 
+        return $loadConfig->getAccount();
+    }
+
+    /**
+     * get container
+     * @return mixed
+     */
+    public function getContainer()
+    {
+        return $this->container;
+    }
+
+    /**
+     * 查询方法属于哪个服务
+     * @param $name
+     * @return mixed
+     */
     private function searchMethodBelong($name)
     {
         $loadConfig = $this->container->make(Constant::LOAD_CONFIG);
@@ -86,7 +110,7 @@ class AppService
     /**
      * 绑定闭包
      */
-    private function getContainer()
+    private function bootContainer()
     {
         $this->container = new Container();
     }
@@ -134,7 +158,6 @@ class AppService
     private function getProviders()
     {
         $loadConfig = $this->container->make(Constant::LOAD_CONFIG);
-
 
         return $loadConfig->getProviders();
     }

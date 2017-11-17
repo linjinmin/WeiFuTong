@@ -47,10 +47,9 @@ class LoadConfig
             if (in_array($method, $value)) {
                 return $key;
             }
-
-            throw new Exception("{this is a not defined method : {$method}}", 1);
         }
 
+        throw new Exception("{this is a not defined method : {$method}}", 1);
     }
 
     /**
@@ -60,7 +59,7 @@ class LoadConfig
      */
     public function getAccount()
     {
-        list($mchId, $secretKey) = $this->config['account'];
+        list($mchId, $secretKey) = $this->getAccountConfig();
 
         if (empty($mchId) || empty($secretKey)) {
             throw new Exception("Account is not set", 1);
@@ -69,16 +68,17 @@ class LoadConfig
         return [$mchId, $secretKey];
     }
 
+
     /**
-     * 设置账户配置
-     * @param string $mchId     商户号
-     * @param [type] $secretKey 商户密匙
+     * 设置账户
+     * @param $mchId
+     * @param $key
      */
-    public function setAccount($mchId, $secretKey)
+    public function setAccount($mchId, $key)
     {
         $account = [
-            'mch_id'     => $mchId,
-            'secret_key' => $secretKey,
+            'mch_id' => $mchId,
+            'key'   => $key
         ];
 
         $this->config['account'] = $account;
@@ -100,6 +100,15 @@ class LoadConfig
     private function load()
     {
         $this->config = include self::CONFIG_PATH;
+    }
+
+    /**
+     * 获取配置中的mch_id , key
+     * @return array
+     */
+    private function getAccountConfig()
+    {
+        return [$this->config['account']['mch_id'], $this->config['account']['key']];
     }
 
 
