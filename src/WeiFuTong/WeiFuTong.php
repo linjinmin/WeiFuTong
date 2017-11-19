@@ -10,7 +10,6 @@ class WeiFuTong
 
     private $app;
 
-
     /**
      * WeiFuTong constructor.
      */
@@ -20,7 +19,6 @@ class WeiFuTong
         // 初始化
         $this->app->bootstrap();
     }
-
 
     /**
      * 重载静态call方法
@@ -34,6 +32,5 @@ class WeiFuTong
 
         return $this->app->call($name, $arguments);
     }
-
 
 }

@@ -12,9 +12,15 @@ class Unit extends PayBase
     use ResponseHandle;
 
     // 刷卡支付接口
-    CONST PAY_TYPE = 'unified.trade.micropay';
-
-
+    const SERVICE_PAY = 'unified.trade.micropay';
+    // 查询订单api
+    const SERVICE_QUERY = 'unified.trade.query';
+    // 撤销订单API
+    const SERVICE_REVERSE = 'unified.micropay.reverse';
+    // 申请退款API
+    const SERVICE_REFUND = 'unified.trade.refund';
+    // 查询退款API
+    const SERVICE_REFUNDQUERY = 'unified.trade.refundquery';
     /**
      * Unit constructor.
      * @param $mchId
@@ -25,24 +31,170 @@ class Unit extends PayBase
         parent::__construct($mchId, $key);
     }
 
-
-
-
-
-    public function tradeMicroPay($data, $timeOut)
+    /**
+     * 提交刷卡支付api
+     * @param  array $data 要请求的参数数组
+     * @param  int $timeOut 默认25 设置超时时间
+     * @param  string $logPath  默认 日志路径
+     * @return array
+     */
+    public function tradeMicropay($data, $timeOut = 25, $logPath = '1')
     {
-        $this->timeOut = $timeOut;
 
+        // 设置时间
+        $this->setTimeOut($timeOut);
 
+        // 设置请求数据
+        $this->setData($data);
 
+        // 设置请求服务
+        $this->setService(self::SERVICE_PAY);
+
+        // 调用支付
+        $res = $this->postRequest();
+
+        // 记录日志等操作.
+
+        // 对数据在进行一次处理,返回重要数据.
+        if ($res['code'] == true) {
+            $res = $this->setRes($this->parseXML($res['data']));
+            // 请求成功, 如果请求失败（无响应，超时等）， 直接返回。
+            $res = $this->resHandle();
+        }
+
+        return $res;
     }
 
+    /**
+     * 查询订单api
+     * @param  array $data 要请求的参数数组
+     * @param  int $timeOut 默认25 设置超时时间
+     * @param  string $logPath  默认 日志路径
+     * @return array
+     */
+    public function tradeQuery($data, $timeOut = 25, $logPath = '1')
+    {
+        // 设置时间
+        $this->setTimeOut($timeOut);
 
+        // 设置请求数据
+        $this->setData($data);
 
+        // 设置请求服务
+        $this->setService(self::SERVICE_QUERY);
 
+        // 调用支付
+        $res = $this->postRequest();
 
+        // 记录日志等操作.
 
+        // 对数据在进行一次处理,返回重要数据.
+        if ($res['code'] == true) {
+            $res = $this->setRes($this->parseXML($res['data']));
+            // 请求成功, 如果请求失败（无响应，超时等）， 直接返回。
+            $res = $this->resHandle();
+        }
 
+        return $res;
+    }
 
+    /**
+     * 撤销订单API
+     * @param  array $data 要请求的参数数组
+     * @param  int $timeOut 默认25 设置超时时间
+     * @param  string $logPath  默认 日志路径
+     * @return array
+     */
+    public function micropayReverse($data, $timeOut = 25, $logPath = '1')
+    {
+        // 设置时间
+        $this->setTimeOut($timeOut);
+
+        // 设置请求数据
+        $this->setData($data);
+
+        // 设置请求服务
+        $this->setService(self::SERVICE_REVERSE);
+
+        // 调用支付
+        $res = $this->postRequest();
+
+        // 记录日志等操作.
+
+        // 对数据在进行一次处理,返回重要数据.
+        if ($res['code'] == true) {
+            $res = $this->setRes($this->parseXML($res['data']));
+            // 请求成功, 如果请求失败（无响应，超时等）， 直接返回。
+            $res = $this->resHandle();
+        }
+
+        return $res;
+    }
+
+    /**
+     * 申请退款API
+     * @param  array $data 要请求的参数数组
+     * @param  int $timeOut 默认25 设置超时时间
+     * @param  string $logPath  默认 日志路径
+     * @return array
+     */
+    public function tradeRefund($data, $timeOut = 25, $logPath = '1')
+    {
+        // 设置时间
+        $this->setTimeOut($timeOut);
+
+        // 设置请求数据
+        $this->setData($data);
+
+        // 设置请求服务
+        $this->setService(self::SERVICE_REFUND);
+
+        // 调用支付
+        $res = $this->postRequest();
+
+        // 记录日志等操作.
+
+        // 对数据在进行一次处理,返回重要数据.
+        if ($res['code'] == true) {
+            $res = $this->setRes($this->parseXML($res['data']));
+            // 请求成功, 如果请求失败（无响应，超时等）， 直接返回。
+            $res = $this->resHandle();
+        }
+
+        return $res;
+    }
+
+    /**
+     * 查询退款API
+     * @param  array $data 要请求的参数数组
+     * @param  int $timeOut 默认25 设置超时时间
+     * @param  string $logPath  默认 日志路径
+     * @return array
+     */
+    public function tradeRefundQuery($data, $timeOut = 25, $logPath = '1')
+    {
+        // 设置时间
+        $this->setTimeOut($timeOut);
+
+        // 设置请求数据
+        $this->setData($data);
+
+        // 设置请求服务
+        $this->setService(self::SERVICE_REFUNDQUERY);
+
+        // 调用支付
+        $res = $this->postRequest();
+
+        // 记录日志等操作.
+
+        // 对数据在进行一次处理,返回重要数据.
+        if ($res['code'] == true) {
+            $res = $this->setRes($this->parseXML($res['data']));
+            // 请求成功, 如果请求失败（无响应，超时等）， 直接返回。
+            $res = $this->resHandle();
+        }
+
+        return $res;
+    }
 
 }

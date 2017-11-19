@@ -8,26 +8,30 @@
 
 namespace WeiFuTong\Service;
 
-use WeiFuTong\Container\Container;
-
 /**
  * 所有支付的基类
  * Class Base
  * @package WeiFuTong\Service
  */
-class PayBase
+abstract class PayBase
 {
-    // 请求路径
-    protected $url;
-
     // 账户
     protected $mchId;
 
     // 密钥
     protected $key;
 
+    // 签名
+    protected $sign;
+
+    // 请求返回结果
+    protected $res;
+
     // 传输数据
-    protected $data=[];
+    protected $data = [];
+
+    // 请求路径
+    protected $url = 'https://pay.swiftpass.cn/pay/gateway';
 
     // 签名类型
     protected $signType = 'MD5';
@@ -44,7 +48,6 @@ class PayBase
     // 日志保存路径
     protected $logPath = '/api/curl_post';
 
-
     /**
      * PayBase constructor.
      * @param $mchId
@@ -53,9 +56,8 @@ class PayBase
     public function __construct($mchId, $key)
     {
         $this->mchId = $mchId;
-        $this->key = $key;
+        $this->key   = $key;
     }
-
 
     /**
      * 设置账户密码
@@ -65,10 +67,59 @@ class PayBase
     public function setAccount($mchId, $key)
     {
         $this->mchId = $mchId;
-        $this->key = $key;
+        $this->key   = $key;
     }
 
+    /**
+     * 设置超时时间
+     * @param int $timeOut
+     */
+    protected function setTimeOut($timeOut)
+    {
+        $this->timeOut = $timeOut;
+    }
 
+    /**
+     * 设置请求数据, 每次清空
+     * @param array $data
+     */
+    protected function setData($data)
+    {
+        $this->data = $data;
+    }
 
+    /**
+     * 设置请求服务
+     * @param string $service 请求服务
+     */
+    protected function setService($service)
+    {
+        $this->data['service'] = $service;
+    }
+
+    /**
+     * 设置请求结果
+     * @param array $res
+     */
+    protected function setRes($res)
+    {
+        $this->res = $res;
+    }
+
+    /**
+     * 构建返回值
+     * @param int $code 请求码
+     * @param string $msg 信息
+     * @param array $data 要保存到日志中的数据
+     * @return array
+     */
+    protected function buildReturn($code, $msg, $data)
+    {
+        return [
+            'code' => $code,
+            'msg'  => $msg,
+            'data' => $data,
+        ];
+    }
 
 }
