@@ -36,19 +36,37 @@ class AppService
     }
 
 
+//    /**
+//     * 调用方法
+//     * @param $name
+//     * @param $arguments
+//     * @return mixed
+//     */
+//    public function call($name, $arguments)
+//    {
+//        $className = $this->searchMethodBelong($name);
+//
+//        $class = $this->container->make($className);
+//
+//        return call_user_func_array([$class, $name], $arguments);
+//    }
+
+
     /**
-     * 调用方法
+     * 获取对象
      * @param $name
-     * @param $arguments
      * @return mixed
+     * @throws \Exception
      */
-    public function call($name, $arguments)
+    public function get($name)
     {
-        $className = $this->searchMethodBelong($name);
+        $object = $this->container->make($name);
 
-        $class = $this->container->make($className);
+        if ($object == null) {
+            throw new \Exception("object:{$name} is not defined");
+        }
 
-        return call_user_func_array([$class, $name], $arguments);
+        return $object;
     }
 
     /**
@@ -83,19 +101,19 @@ class AppService
         return $this->container;
     }
 
-    /**
-     * 查询方法属于哪个服务
-     * @param $name
-     * @return mixed
-     */
-    private function searchMethodBelong($name)
-    {
-        $loadConfig = $this->container->make(Constant::LOAD_CONFIG);
-
-        $belong = $loadConfig->methodBelong($name);
-
-        return $belong;
-    }
+//    /**
+//     * 查询方法属于哪个服务
+//     * @param $name
+//     * @return mixed
+//     */
+//    private function searchMethodBelong($name)
+//    {
+//        $loadConfig = $this->container->make(Constant::LOAD_CONFIG);
+//
+//        $belong = $loadConfig->methodBelong($name);
+//
+//        return $belong;
+//    }
 
     /**
      * 绑定初始服务配置

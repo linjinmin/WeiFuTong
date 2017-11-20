@@ -37,6 +37,10 @@ class Container
     public function make($abstract, $parameters = [])
     {
 
+        if (!$this->bound($abstract)) {
+            return null;
+        }
+
         if (isset($this->instance[$abstract])) {
             return $this->instance[$abstract];
         }
