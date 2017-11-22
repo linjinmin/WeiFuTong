@@ -35,23 +35,6 @@ class AppService
 
     }
 
-
-//    /**
-//     * 调用方法
-//     * @param $name
-//     * @param $arguments
-//     * @return mixed
-//     */
-//    public function call($name, $arguments)
-//    {
-//        $className = $this->searchMethodBelong($name);
-//
-//        $class = $this->container->make($className);
-//
-//        return call_user_func_array([$class, $name], $arguments);
-//    }
-
-
     /**
      * 获取对象
      * @param $name
@@ -60,11 +43,12 @@ class AppService
      */
     public function get($name)
     {
-        $object = $this->container->make($name);
 
-        if ($object == null) {
+        if (!$this->container->bound($name)) {
             throw new \Exception("object:{$name} is not defined");
         }
+
+        $object = $this->container->make($name);
 
         return $object;
     }
@@ -101,19 +85,6 @@ class AppService
         return $this->container;
     }
 
-//    /**
-//     * 查询方法属于哪个服务
-//     * @param $name
-//     * @return mixed
-//     */
-//    private function searchMethodBelong($name)
-//    {
-//        $loadConfig = $this->container->make(Constant::LOAD_CONFIG);
-//
-//        $belong = $loadConfig->methodBelong($name);
-//
-//        return $belong;
-//    }
 
     /**
      * 绑定初始服务配置
