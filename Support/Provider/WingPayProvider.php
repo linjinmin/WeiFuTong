@@ -25,10 +25,11 @@ class WingPayProvider implements ServiceProvider
     public function register()
     {
 
-        $params = $this->app->getPayConstructParams();
+        $helper = $this->app->helper;
 
         // TODO: Implement register() method.
-        $this->app->bind(Constant::PROVIDER_WINGPAY, function () use ($params) {
+        $this->app->bind(Constant::PROVIDER_WINGPAY, function () use ($helper) {
+            $params = $helper->getAccount();
             return new WingPay(...$params);
         });
 
