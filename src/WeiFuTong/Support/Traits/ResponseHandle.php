@@ -209,7 +209,7 @@ trait ResponseHandle
      */
     private function judgePayStatus($errCode)
     {
-        if (in_array($code, $this->payUnknown)) {
+        if (in_array($errCode, $this->payUnknown)) {
             return 201;
         }
 

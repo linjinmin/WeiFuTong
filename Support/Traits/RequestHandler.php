@@ -16,12 +16,18 @@ namespace WeiFuTong\Support\Traits;
 trait RequestHandler
 {
 
+    /**
+     * 请求准备
+     */
     private function prepareRequest()
     {
         $this->data['version']   = $this->version;
         $this->data['mch_id']    = $this->mchId;
         $this->data['nonce_str'] = $this->createRandomStr();
         $this->data['sign']      = $this->createSign();
+
+        // 记录请求日志，
+        pft_log($this->logPath,'request:'.var_export($this->data,true), 'month');
     }
 
     /**
@@ -30,9 +36,6 @@ trait RequestHandler
      */
     private function postRequest()
     {
-        // 对数据进行处理
-        $this->prepareRequest();
-
         // 启动一个CURL会话
         $ch = curl_init();
 

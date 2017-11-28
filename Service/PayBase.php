@@ -79,9 +79,13 @@ abstract class PayBase
         $this->timeOut = $timeOut;
     }
 
+    /**
+     * 设置日志
+     * @param $logPath
+     */
     protected function setLogPath($logPath)
     {
-//        $this->
+        $this->logPath = $logPath;
     }
 
     /**

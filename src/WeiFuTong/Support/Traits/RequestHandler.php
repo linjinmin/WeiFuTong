@@ -30,9 +30,6 @@ trait RequestHandler
      */
     private function postRequest()
     {
-        // 对数据进行处理
-        $this->prepareRequest();
-
         // 启动一个CURL会话
         $ch = curl_init();
 
