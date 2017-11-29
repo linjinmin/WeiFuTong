@@ -56,6 +56,28 @@ class Helper
         return $this->getLoadConfigAccount();
     }
 
+
+    /**
+     * 将数组转化为对象
+     * @param $data
+     * @return \StdClass
+     * @throws \Exception
+     */
+    public function arrayConvertObject($data)
+    {
+        if (!is_array($data)) {
+            return new \stdClass();
+        }
+
+        $class = new \StdClass();
+
+        foreach ($data as $key => $value) {
+            $class->$key = $value;
+        }
+
+        return $class;
+    }
+
     /**
      * 设置配置的config
      * @param string $mchId

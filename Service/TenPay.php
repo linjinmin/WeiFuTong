@@ -49,13 +49,20 @@ class TenPay extends PayBase
      */
     public function tenpayJsPay($data, $timeOut = Constant::TIMEOUT, $logPath = Constant::LOGPATH)
     {
+        // 设置时间
         $this->setTimeOut($timeOut);
+
+        // 设置日志
+        $this->setLogPath($logPath);
 
         // 设置请求数据
         $this->setData($data);
 
         // 设置请求服务
         $this->setService(self::SERVICE_TENPAY_JSPAY);
+
+        // 对数据进行处理
+        $this->prepareRequest();
 
         // 调用支付
         $res = $this->postRequest();
@@ -79,13 +86,20 @@ class TenPay extends PayBase
      */
     public function tenpayNative($data, $timeOut = Constant::TIMEOUT, $logPath = Constant::LOGPATH)
     {
+        // 设置时间
         $this->setTimeOut($timeOut);
+
+        // 设置日志
+        $this->setLogPath($logPath);
 
         // 设置请求数据
         $this->setData($data);
 
         // 设置请求服务
         $this->setService(self::SERVICE_TENPAY_NATIVE);
+
+        // 对数据进行处理
+        $this->prepareRequest();
 
         // 调用支付
         $res = $this->postRequest();
@@ -111,13 +125,20 @@ class TenPay extends PayBase
      */
     public function tenpayWapPay($data, $timeOut = Constant::TIMEOUT, $logPath = Constant::LOGPATH)
     {
+        // 设置时间
         $this->setTimeOut($timeOut);
+
+        // 设置日志
+        $this->setLogPath($logPath);
 
         // 设置请求数据
         $this->setData($data);
 
         // 设置请求服务
         $this->setService(self::SERVICE_TENPAY_WAP_PAY);
+
+        // 对数据进行处理
+        $this->prepareRequest();
 
         // 调用支付
         $res = $this->postRequest();

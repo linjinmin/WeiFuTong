@@ -17,7 +17,7 @@ trait RequestHandler
 {
 
     /**
-     * 请求准备
+     *
      */
     private function prepareRequest()
     {
@@ -25,6 +25,9 @@ trait RequestHandler
         $this->data['mch_id']    = $this->mchId;
         $this->data['nonce_str'] = $this->createRandomStr();
         $this->data['sign']      = $this->createSign();
+
+        var_dump($this->data);
+        die;
 
         // 记录请求日志，
         pft_log($this->logPath,'request:'.var_export($this->data,true), 'month');

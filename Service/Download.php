@@ -47,13 +47,20 @@ class Download extends PayBase
      */
     public function downloadSingle($data, $timeOut = Constant::TIMEOUT, $logPath = Constant::LOGPATH)
     {
+        // 设置时间
         $this->setTimeOut($timeOut);
+
+        // 设置日志
+        $this->setLogPath($logPath);
 
         // 设置请求数据
         $this->setData($data);
 
         // 设置请求服务
         $this->setService(self::SERVICE_DOWNLOAD_SINGLE);
+
+        // 对数据进行处理
+        $this->prepareRequest();
 
         // 调用支付
         $res = $this->postRequest();
@@ -77,13 +84,20 @@ class Download extends PayBase
      */
     public function downloadAll($data, $timeOut = Constant::TIMEOUT, $logPath = Constant::LOGPATH)
     {
+        // 设置时间
         $this->setTimeOut($timeOut);
+
+        // 设置日志
+        $this->setLogPath($logPath);
 
         // 设置请求数据
         $this->setData($data);
 
         // 设置请求服务
-        $this->setService(self::SERVICE_DOWNLOAD_SINGLE);
+        $this->setService(self::SERVICE_DOWNLOAD_ALL);
+
+        // 对数据进行处理
+        $this->prepareRequest();
 
         // 调用支付
         $res = $this->postRequest();
@@ -107,13 +121,20 @@ class Download extends PayBase
      */
     public function downloadChannel($data, $timeOut = Constant::TIMEOUT, $logPath = Constant::LOGPATH)
     {
+        // 设置时间
         $this->setTimeOut($timeOut);
+
+        // 设置日志
+        $this->setLogPath($logPath);
 
         // 设置请求数据
         $this->setData($data);
 
         // 设置请求服务
         $this->setService(self::SERVICE_DOWNLOAD_CHANNEL);
+
+        // 对数据进行处理
+        $this->prepareRequest();
 
         // 调用支付
         $res = $this->postRequest();

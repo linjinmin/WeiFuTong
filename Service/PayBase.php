@@ -79,8 +79,9 @@ abstract class PayBase
         $this->timeOut = $timeOut;
     }
 
+
     /**
-     * 设置日志
+     * 设置日志路径
      * @param $logPath
      */
     protected function setLogPath($logPath)
@@ -129,6 +130,16 @@ abstract class PayBase
             'msg'  => $msg,
             'data' => $data,
         ];
+    }
+
+    /**
+     * 记录日志
+     * @param $logPath
+     * @param $content
+     */
+    protected function saveLog($logPath, $content)
+    {
+        pft_log($logPath, $content);
     }
 
 }

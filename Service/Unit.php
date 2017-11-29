@@ -52,11 +52,17 @@ class Unit extends PayBase
         // 设置时间
         $this->setTimeOut($timeOut);
 
+        // 设置日志
+        $this->setLogPath($logPath);
+
         // 设置请求数据
         $this->setData($data);
 
         // 设置请求服务
         $this->setService(self::SERVICE_MICRO_PAY);
+
+        // 对数据进行处理
+        $this->prepareRequest();
 
         // 调用支付
         $res = $this->postRequest();
@@ -83,11 +89,17 @@ class Unit extends PayBase
         // 设置时间
         $this->setTimeOut($timeOut);
 
+        // 设置日志
+        $this->setLogPath($logPath);
+
         // 设置请求数据
         $this->setData($data);
 
         // 设置请求服务
         $this->setService(self::SERVICE_QUERY);
+
+        // 对数据进行处理
+        $this->prepareRequest();
 
         // 调用支付
         $res = $this->postRequest();
@@ -114,11 +126,17 @@ class Unit extends PayBase
         // 设置时间
         $this->setTimeOut($timeOut);
 
+        // 设置日志
+        $this->setLogPath($logPath);
+
         // 设置请求数据
         $this->setData($data);
 
         // 设置请求服务
         $this->setService(self::SERVICE_REVERSE);
+
+        // 对数据进行处理
+        $this->prepareRequest();
 
         // 调用支付
         $res = $this->postRequest();
@@ -145,11 +163,17 @@ class Unit extends PayBase
         // 设置时间
         $this->setTimeOut($timeOut);
 
+        // 设置日志
+        $this->setLogPath($logPath);
+
         // 设置请求数据
         $this->setData($data);
 
         // 设置请求服务
         $this->setService(self::SERVICE_REFUND);
+
+        // 对数据进行处理
+        $this->prepareRequest();
 
         // 调用支付
         $res = $this->postRequest();
@@ -176,11 +200,17 @@ class Unit extends PayBase
         // 设置时间
         $this->setTimeOut($timeOut);
 
+        // 设置日志
+        $this->setLogPath($logPath);
+
         // 设置请求数据
         $this->setData($data);
 
         // 设置请求服务
         $this->setService(self::SERVICE_REFUND_QUERY);
+
+        // 对数据进行处理
+        $this->prepareRequest();
 
         // 调用支付
         $res = $this->postRequest();
@@ -204,13 +234,20 @@ class Unit extends PayBase
      */
     public function tradeClose($data, $timeOut = Constant::TIMEOUT, $logPath = Constant::LOGPATH)
     {
+        // 设置时间
         $this->setTimeOut($timeOut);
+
+        // 设置日志
+        $this->setLogPath($logPath);
 
         // 设置请求数据
         $this->setData($data);
 
         // 设置请求服务
         $this->setService(self::SERVICE_CLOSE);
+
+        // 对数据进行处理
+        $this->prepareRequest();
 
         // 调用支付
         $res = $this->postRequest();
@@ -234,13 +271,20 @@ class Unit extends PayBase
      */
     public function tradePay($data, $timeOut = Constant::TIMEOUT, $logPath = Constant::LOGPATH)
     {
+        // 设置时间
         $this->setTimeOut($timeOut);
+
+        // 设置日志
+        $this->setLogPath($logPath);
 
         // 设置请求数据
         $this->setData($data);
 
         // 设置请求服务
         $this->setService(self::SERVICE_TRADE_PAY);
+
+        // 对数据进行处理
+        $this->prepareRequest();
 
         // 调用支付
         $res = $this->postRequest();
@@ -259,23 +303,30 @@ class Unit extends PayBase
     /**
      * 微信支付回调
      * @param Closure $closure
+     * @param string $logPath
      * @return mixed|string
      */
-    public function handleNotify(Closure $closure)
+    public function handleNotify(Closure $closure, $logPath)
     {
+        $_POST = json_decode(file_get_contents('php://input'), true);
 
-        $xml = $_POST;
+        $res = $this->parseXML($_POST);
 
-        if ($xml == null) {
-            // 记录日志
-            return 'fail';
+        // 验证签名
+        if (!$this->isTenpaySign($res['sign'])) {
+//             记录失败日志
+            $this->saveLog($logPath, '签名验证失败');
+            echo 'fail';
         }
 
-        $data = $this->parseXML($xml);
         // 获取数组对象
-        $notify = $this->transformArrayToObject($data);
+        $notify = $this->transformArrayToObject($res);
         // 获取支付结果
-        $successful = $this->checkPaySuccess($data);
+        $successful = $this->checkPaySuccess($res);
+
+        if (!$successful) {
+            $this->saveLog($logPath, 'fail:' . json_encode($res, JSON_UNESCAPED_UNICODE));
+        }
 
         return call_user_func_array($closure, [$notify, $successful]);
     }
@@ -290,7 +341,7 @@ class Unit extends PayBase
     {
 
         if (!is_array($data)) {
-            throw new \Exception('transform Array To Object:param must be a array');
+            return new \stdClass();
         }
 
         $class = new \StdClass();
